@@ -115,4 +115,102 @@ class GagarinController extends Controller
             ],
         ]);
     }
+
+    public function lunarMissions(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Login failed'], 403);
+        }
+
+        return response()->json([
+            [
+                'mission' => [
+                    'name' => 'Аполлон-11',
+                    'launch_details' => [
+                        'launch_date' => '1969-07-16',
+                        'launch_site' => [
+                            'name' => 'Космический центр имени Кеннеди',
+                            'location' => [
+                                'latitude' => '28.5721000',
+                                'longitude' => '-80.6480000',
+                            ],
+                        ],
+                    ],
+                    'landing_details' => [
+                        'landing_date' => '1969-07-20',
+                        'landing_site' => [
+                            'name' => 'Море спокойствия',
+                            'coordinates' => [
+                                'latitude' => '0.6740000',
+                                'longitude' => '23.4720000',
+                            ],
+                        ],
+                    ],
+                    'spacecraft' => [
+                        'command_module' => 'Колумбия',
+                        'lunar_module' => 'Орел',
+                        'crew' => [
+                            [
+                                'name' => 'Нил Армстронг',
+                                'role' => 'Командир',
+                            ],
+                            [
+                                'name' => 'Базз Олдрин',
+                                'role' => 'Пилот лунного модуля',
+                            ],
+                            [
+                                'name' => 'Майкл Коллинз',
+                                'role' => 'Пилот командного модуля',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'mission' => [
+                    'name' => 'Аполлон-17',
+                    'launch_details' => [
+                        'launch_date' => '1972-12-07',
+                        'launch_site' => [
+                            'name' => 'Космический центр имени Кеннеди',
+                            'location' => [
+                                'latitude' => '28.5721000',
+                                'longitude' => '-80.6480000',
+                            ],
+                        ],
+                    ],
+                    'landing_details' => [
+                        'landing_date' => '1972-12-19',
+                        'landing_site' => [
+                            'name' => 'Телец-Литтров',
+                            'coordinates' => [
+                                'latitude' => '20.1908000',
+                                'longitude' => '30.7717000',
+                            ],
+                        ],
+                    ],
+                    'spacecraft' => [
+                        'command_module' => 'Америка',
+                        'lunar_module' => 'Челленджер',
+                        'crew' => [
+                            [
+                                'name' => 'Евгений Сернан',
+                                'role' => 'Командир',
+                            ],
+                            [
+                                'name' => 'Харрисон Шмитт',
+                                'role' => 'Пилот лунного модуля',
+                            ],
+                            [
+                                'name' => 'Рональд Эванс',
+                                'role' => 'Пилот командного модуля',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+    }
 }
