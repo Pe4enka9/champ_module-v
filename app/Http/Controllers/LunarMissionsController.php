@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LunarMission;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 class LunarMissionsController extends Controller
@@ -147,5 +149,24 @@ class LunarMissionsController extends Controller
                 'message' => 'Миссия добавлена',
             ],
         ], 201);
+    }
+
+    public function deleteLunarMission(Request $request, int $id): JsonResponse | Response
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Login failed'], 403);
+        }
+
+        $mission = LunarMission::query()->find($id);
+
+        if (!$mission) {
+            return response()->json(['message' => 'Not found', 'code' => 404], 404);
+        }
+
+        $mission->delete();
+
+        return response()->noContent();
     }
 }

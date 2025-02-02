@@ -12,3 +12,4 @@ Route::get('/gagarin-flight', [GagarinController::class, 'gagarinFlight'])->midd
 Route::get('flight', [GagarinController::class, 'flight'])->middleware('auth:sanctum');
 Route::get('/lunar-missions', [LunarMissionsController::class, 'lunarMissions'])->middleware('auth:sanctum');
 Route::post('/lunar-missions', [LunarMissionsController::class, 'addLunarMissions'])->middleware('auth:sanctum');
+Route::delete('/lunar-missions/{id}', [LunarMissionsController::class, 'deleteLunarMission'])->middleware('auth:sanctum');
