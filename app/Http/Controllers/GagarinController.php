@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class GagarinController extends Controller
 {
@@ -212,5 +213,48 @@ class GagarinController extends Controller
                 ],
             ],
         ]);
+    }
+
+    public function addLunarMissions(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Login failed'], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'mission.name' => ['required', 'string', 'max:255'],
+            'mission.launch_details.launch_date' => ['required', 'date_format:Y-m-d'],
+            'mission.launch_details.launch_site.name' => ['required', 'string', 'max:255'],
+            'mission.launch_details.launch_site.location.latitude' => ['required', 'numeric'],
+            'mission.launch_details.launch_site.location.longitude' => ['required', 'numeric'],
+            'mission.landing_details.landing_date' => ['required', 'date_format:Y-m-d'],
+            'mission.landing_details.landing_site.name' => ['required', 'string', 'max:255'],
+            'mission.landing_details.landing_site.coordinates.latitude' => ['required', 'numeric'],
+            'mission.landing_details.landing_site.coordinates.longitude' => ['required', 'numeric'],
+            'mission.spacecraft.command_module' => ['required', 'string', 'max:255'],
+            'mission.spacecraft.lunar_module' => ['required', 'string', 'max:255'],
+            'mission.spacecraft.crew' => ['required', 'array', 'min:1'],
+            'mission.spacecraft.crew.*.name' => ['required', 'string', 'max:255'],
+            'mission.spacecraft.crew.*.role' => ['required', 'string', 'max:255'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => [
+                    'code' => 422,
+                    'message' => 'Validation error',
+                    'errors' => $validator->errors(),
+                ],
+            ], 422);
+        }
+
+        return response()->json([
+            'data' => [
+                'code' => 201,
+                'message' => 'Миссия добавлена',
+            ],
+        ], 201);
     }
 }
